@@ -1,6 +1,7 @@
+// App.js
 import React, { useState } from 'react';
-import Table from './components/Table';
 import Form from './components/Form';
+import Table from './components/Table';
 import SearchBar from './components/SearchBar';
 
 function App() {
@@ -13,20 +14,27 @@ function App() {
   ]);
   const [filteredTransactions, setFilteredTransactions] = useState(transactions);
 
-  function handleAddTransaction(formData) {
+  const handleAddTransaction = (formData) => {
     const newTransaction = {
       id: transactions.length + 1,
       ...formData
     };
-    setTransactions([...transactions, newTransaction]);
-    setFilteredTransactions([...filteredTransactions, newTransaction]);
-  }
+    setTransactions(prevTransactions => [...prevTransactions, newTransaction]);
+    setFilteredTransactions(prevFilteredTransactions => [...prevFilteredTransactions, newTransaction]);
+  };
+
+  const handleSearchTransactions = (searchQuery) => {
+    const filtered = transactions.filter(transaction =>
+      transaction.description.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredTransactions(filtered);
+  };
 
   return (
-    <div style={{ textAlign: 'center',}}>
-      <h1>Bank of Flatiron</h1>
+    <div style={{ textAlign: 'center', backgroundColor: 'lawngreen', minHeight: '100vh', padding: '20px' }}>
+      <h1 style={{ color: 'white' }}>Bank of Flatiron</h1>
       <Form onAddTransaction={handleAddTransaction} />
-      <SearchBar transactions={transactions} setFilteredTransactions={setFilteredTransactions} />
+      <SearchBar setFilteredTransactions={handleSearchTransactions} />
       <Table transactions={filteredTransactions} />
     </div>
   );

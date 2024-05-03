@@ -1,14 +1,14 @@
+// SearchBar.js
 import React, { useState } from 'react';
 
-const SearchBar = ({ transactions, setFilteredTransactions }) => {
+function SearchBar({ setFilteredTransactions }) {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleChange = e => {
-    setSearchQuery(e.target.value);
-    const filtered = transactions.filter(transaction =>
-      transaction.description.toLowerCase().includes(e.target.value.toLowerCase())
-    );
-    setFilteredTransactions(filtered);
+  const handleChange = (event) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    // Update filtered transactions here if needed
+    setFilteredTransactions(query);
   };
 
   return (
@@ -16,13 +16,13 @@ const SearchBar = ({ transactions, setFilteredTransactions }) => {
       <label style={{ display: 'block', marginBottom: '8px' }}>Search Transactions:</label>
       <input
         type="text"
+        placeholder="Search transactions..."
         value={searchQuery}
         onChange={handleChange}
         style={{ width: '100%', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
-        placeholder="Search by description..."
       />
     </div>
   );
-};
+}
 
 export default SearchBar;
